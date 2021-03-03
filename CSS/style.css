@@ -1,0 +1,13 @@
+.puzzle
+{
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
+
+.puzzle img
+{
+  width: 50%;
+  position: absolute;
+  left: 25%;
+}
