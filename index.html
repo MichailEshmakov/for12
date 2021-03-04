@@ -6,13 +6,107 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="CSS/style.css">
   <title>for12</title>
+  <script>
+    function OnFirstRingClick()
+    {
+      const ring1 = document.getElementById('ring1');
+      const ring4 = document.getElementById('ring4');
+
+      ring1.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring1') - 30)+"deg)";
+      ring4.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring4') - 30)+"deg)";
+      CheckWin();
+    }
+    function OnSecondRingClick()
+    {
+      const ring2 = document.getElementById('ring2');
+      const ring3 = document.getElementById('ring3');
+
+      ring2.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring2') - 30)+"deg)";
+      ring3.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring3') + 30)+"deg)";
+      CheckWin();
+    }
+    function OnThirdRingClick()
+    {
+      const ring3 = document.getElementById('ring3');
+      const ring4 = document.getElementById('ring4');
+
+      ring3.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring3') - 30)+"deg)";
+      ring4.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring4') + 30)+"deg)";
+      CheckWin();
+    }
+    function OnFourthRingClick()
+    {
+      const ring4 = document.getElementById('ring4');
+      const ring1 = document.getElementById('ring1');
+
+      ring4.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring4') - 30)+"deg)";
+      ring1.style.webkitTransform = "translate(-50%, -50%) rotate("+(getDegreeElementById('ring1') - 30)+"deg)";
+      CheckWin();
+    }
+
+    function CheckWin()
+    {
+      if (getDegreeElementById('ring1') == 0
+        && getDegreeElementById('ring2') == 0
+        && getDegreeElementById('ring3') == 0
+        && getDegreeElementById('ring4') == 0
+        )
+      {
+        setTimeout(() => win(), 1000);
+      }
+      
+    }
+
+    function win()
+    {
+      document.body.innerHTML = '<h1>Наверху можно найти много интересного</h1>';
+    }
+
+    // функция для определения угла наклона элемента 
+    function getDegreeElementById(id_element){
+        var element = document.getElementById(id_element);
+        var style = window.getComputedStyle(element, null);
+        // получаем значение стилей
+        var valueStyle = style.getPropertyValue("-webkit-transform") ||
+            style.getPropertyValue("-moz-transform") ||
+            style.getPropertyValue("-ms-transform") ||
+            style.getPropertyValue("-o-transform") ||
+            style.getPropertyValue("transform");
+        // если стилей нет, то угол 0 градусов
+        if(valueStyle == 'none') return 0;
+        // разбираем полученное значение
+        console.log(valueStyle);
+        var values = valueStyle.split('(')[1];
+        values = values.split(')')[0];
+        values = values.split(',');
+        // получаем синус и косинус
+        var cos = values[0];
+        var sin = values[1];
+        // вычисляем угол
+        var degree = Math.round(Math.asin(sin) * (180/Math.PI));
+        if(cos<0){
+            addDegree = 90 - Math.round(Math.asin(sin) * (180/Math.PI));
+            degree = 90 + addDegree;
+        }
+        if(degree < 0){
+            degree = 360 + degree;
+        }
+        return degree;
+    }
+  </script>
 </head>
 <body>
   <div class="puzzle">
-    <img src="Source/1.png" alt="">
-    <img src="Source/2.png" alt="">
-    <img src="Source/3.png" alt="">
-    <img src="Source/4.png" alt="">
+    <img src="Source/1.png" id="ring1" alt="">
+    <img src="Source/2.png" id="ring2" alt="">
+    <img src="Source/3.png" id="ring3" alt="">
+    <img src="Source/4.png" id="ring4" alt="" usemap="#rings">
   </div>
+  <map name="rings">
+    <area onclick="OnFirstRingClick()" shape="circle" coords="300,300, 50">
+    <area onclick="OnSecondRingClick()" shape="circle" coords="300,300, 150">
+    <area onclick="OnThirdRingClick()" shape="circle" coords="300,300, 250">
+    <area onclick="OnFourthRingClick()" shape="circle" coords="300,300, 300">
+  </map>
 </body>
 </html>
